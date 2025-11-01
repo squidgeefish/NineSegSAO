@@ -150,8 +150,8 @@ int main() {
 
 	static uint16_t segrun[256];
 
-    i2c_registers[MODE] = MODE_DISCRETE;
-    i2c_registers[INDEX] = 3;
+    i2c_registers[MODE] = MODE_SHADER;
+    i2c_registers[INDEX] = 7;
 
 	last_sec = SysTick->CNT;
     while (1)
@@ -159,16 +159,15 @@ int main() {
         // t = 6MHz
         uint32_t t = SysTick->CNT;
 
-//        secframect++;
-//        if( (int32_t)(t-last_sec) > 5*6000000 )
-//        {
-//            //printf( "%d\n", secframect );
-//            secframect = 0;
-//            last_sec += 5*6000000;
-//            i2c_registers[MODE]++;
-//            i2c_registers[MODE] %= 3;
-//        } 
-//
+        secframect++;
+        if( (int32_t)(t-last_sec) > 10*6000000 )
+        {
+            secframect = 0;
+            last_sec += 10*6000000;
+            i2c_registers[MODE]++;
+            i2c_registers[MODE] %= 2;
+        } 
+
         asm volatile (""::: "memory");
 
         if (i2c_registers[MODE] == MODE_SHADER)      
